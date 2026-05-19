@@ -1,28 +1,27 @@
-# Slingan WordPress pipeline
+# Slingan — release pipeline
 
-Slingan is deployed separately from [State of Trust](https://github.com/StateOfTrust/StateOfTrust).
+Personal site: no NAS staging. Develop locally, commit to Git, deploy to production when ready.
 
-## Staging (NAS)
+## Flow
 
-| Setting | Default |
-|---------|---------|
-| URL | `http://100.72.42.84:8083/` |
-| NAS path | `/volume1/docker/slingan-staging` |
-| SSH | `bot@100.72.42.84:9250` (Tailscale) |
+```text
+Local WP (slingan.local) -> GitHub -> production host
+```
 
-1. On the NAS, create the project folder and copy `docker/staging/.env.example` to `.env` with real passwords.
-2. Start the stack in Container Manager (or `docker compose up -d` over SSH).
-3. From your Mac: `./scripts/deploy-staging.sh` then `./scripts/seed-staging-content.sh`.
+1. Develop in Local WP.
+2. `./scripts/sync-local-theme.sh`
+3. Commit and push to GitHub.
+4. Back up production database and uploads.
+5. `./scripts/deploy-production.sh`
+6. `./scripts/seed-production-content.sh` when `seed-content.php` changed.
+7. Verify the live URL.
 
-## Production
-
-Copy `.env.production.example` to `.env.production` when Loopia (or other host) paths are known. Theme deploy is code-only; take DB and uploads backups before releases.
-
-## Git owns
+## What Git owns
 
 - `wordpress/wp-content/themes/slingan`
-- `docker/staging`
 - `scripts/`
 - `docs/`
 
-Git does not own database, uploads, or credentials.
+## Production
+
+Copy `.env.production.example` to `.env.production`. Set host, SSH user, WordPress paths, and `PRODUCTION_URL` for wherever Slingan is hosted.

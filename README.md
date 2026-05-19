@@ -1,31 +1,36 @@
 # Slingan
 
-Git-backed WordPress project for [Slingan](https://github.com/StateOfTrust/slingan_webb) — boardgame community and studio site, separate from State of Trust.
+Git-backed WordPress project for the Slingan boardgame community site — separate from [State of Trust](https://github.com/StateOfTrust/StateOfTrust).
+
+Repo: https://github.com/StateOfTrust/slingan_webb
 
 ## Pipeline
 
 ```text
-Local Mac -> GitHub -> NAS staging (:8083) -> production (when configured)
+Local Mac -> GitHub -> production
 ```
 
-## Local setup
+No NAS staging.
 
-1. Create a Local WP site named **slingan** (or set `LOCAL_WP_PATH` to your install).
-2. `./scripts/sync-local-theme.sh`
-3. `./scripts/reset-local-wp.sh --yes` for a clean database (destructive).
-4. Or `./scripts/seed-local-content.sh` on an existing install.
+## Local
 
-Default local URL: `http://slingan.local`  
-Default admin: `ola` / `othello`
+- Site: `http://slingan.local`
+- Admin: `ola` / `othello`
 
-## Scripts
+```bash
+./scripts/sync-local-theme.sh
+./scripts/seed-local-content.sh
+./scripts/reset-local-wp.sh --yes
+```
 
-| Script | Purpose |
-|--------|---------|
-| `scripts/reset-local-wp.sh --yes` | Wipe local DB and reinstall WordPress |
-| `scripts/sync-local-theme.sh` | Sync `slingan` theme to Local WP |
-| `scripts/seed-local-content.sh` | Apply Slingan pages and options locally |
-| `scripts/deploy-staging.sh` | Deploy theme + Compose to NAS |
-| `scripts/seed-staging-content.sh` | Seed staging after deploy |
+If the browser opens the wrong site or domain, run `./scripts/seed-local-content.sh` from **this** repository (or `./scripts/reset-local-wp.sh --yes`). Scripts pick the MySQL socket that belongs to `Local Sites/slingan`, not another Local site.
 
-See `docs/pipeline.md` for NAS paths and staging URL.
+## Production
+
+```bash
+cp .env.production.example .env.production
+./scripts/deploy-production.sh
+./scripts/seed-production-content.sh
+```
+
+See `docs/pipeline.md`.

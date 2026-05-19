@@ -16,23 +16,32 @@ if [[ "${1:-}" != "--yes" ]]; then
   exit 1
 fi
 
-PHP_ARGS=()
-for candidate in /Users/ola/Library/Application\ Support/Local/run/*/mysql/mysqld.sock; do
-  if [[ -S "$candidate" ]]; then
-    PHP_ARGS=(
-      -d "mysqli.default_socket=$candidate"
-      -d "pdo_mysql.default_socket=$candidate"
-      -d "mysql.default_socket=$candidate"
-    )
-    break
-  fi
-done
-
 if [[ ! -f "$LOCAL_WP_PATH/wp-config.php" ]]; then
   echo "Local WordPress not found at ${LOCAL_WP_PATH}" >&2
   echo "Create a Local site named 'slingan' first, then run this again." >&2
   exit 1
 fi
+
+# shellcheck source=_find-socket.sh
+source "$ROOT_DIR/scripts/_find-socket.sh"
+: "${LOCAL_DB_SOCKET:=}"
+if [[ -z "$LOCAL_DB_SOCKET" ]]; then
+  LOCAL_DB_SOCKET="$(resolve_mysql_socket "$LOCAL_WP_PATH" "$LOCAL_SITE_URL")"
+fi
+if [[ -z "$LOCAL_DB_SOCKET" || ! -S "$LOCAL_DB_SOCKET" ]]; then
+  echo "Could not resolve Local MySQL socket for:" >&2
+  echo "  WP path: ${LOCAL_WP_PATH}" >&2
+  echo "  Site URL: ${LOCAL_SITE_URL}" >&2
+  echo "Is the Slingan site running in Local?" >&2
+  exit 1
+fi
+echo "Using MySQL socket: ${LOCAL_DB_SOCKET}"
+
+PHP_ARGS=(
+  -d "mysqli.default_socket=$LOCAL_DB_SOCKET"
+  -d "pdo_mysql.default_socket=$LOCAL_DB_SOCKET"
+  -d "mysql.default_socket=$LOCAL_DB_SOCKET"
+)
 
 echo "Reinstalling WordPress..."
 php "${PHP_ARGS[@]}" "$ROOT_DIR/scripts/reset-local-wp.php" \
