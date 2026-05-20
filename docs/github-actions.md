@@ -26,7 +26,7 @@ In **GitHub → StateOfTrust/slingan_webb → Settings → Secrets and variables
 | `NAS_PORT` | No | `9250` |
 | `NAS_USER` | No | `bot` |
 | `NAS_PROJECT` | No | `/volume1/docker/slingan-staging` (not `morkwebb-staging`) |
-| `STAGING_URL` | No | `http://100.72.42.84:8082` (Mörk uses **8080**) |
+| `STAGING_URL` | No | `http://100.72.42.84:8083` (Mörk **8080**, SoT **8082**) |
 | `NAS_DOCKER` | No | `sudo -n /usr/local/bin/docker` |
 
 Only **`NAS_SSH_PRIVATE_KEY`** is mandatory if defaults match your NAS.
@@ -51,7 +51,7 @@ Deploy uses **SSH to the NAS** (Tailscale). GitHub’s hosted runners must be ab
 - Connect the job to Tailscale (e.g. [Tailscale GitHub Action](https://github.com/tailscale/github-action)), or
 - Run deploy from your machine when off-network (scripts still work).
 
-The workflow skips the HTTP “curl staging URL” check when `CI=true` (cloud runners often cannot open `http://100.72.42.84:8082` anyway).
+The workflow skips the HTTP “curl staging URL” check when `CI=true` (cloud runners often cannot open the Tailscale URL anyway).
 
 ## Production (Loopia)
 

@@ -13,7 +13,7 @@ Local Mac -> GitHub -> NAS staging -> production
 | Environment | Default URL |
 |-------------|-------------|
 | Local | `http://slingan.local` |
-| NAS staging | `http://100.72.42.84:8082` |
+| NAS staging | `http://100.72.42.84:8083` |
 | Production | set in `.env.production` |
 
 ## Board Games theme
@@ -39,7 +39,7 @@ See **`docs/board-games-for-slingan.md`** and **`docs/nas-staging.md`**.
 
 One-time setup: NAS `.env`, WordPress install, Board Games theme, and GitHub secret **`NAS_SSH_PRIVATE_KEY`**. See **`docs/github-actions.md`** and **`docs/nas-staging.md`**.
 
-Default staging URL: `http://100.72.42.84:8082`
+Default staging URL: `http://100.72.42.84:8083`
 
 Manual fallback:
 

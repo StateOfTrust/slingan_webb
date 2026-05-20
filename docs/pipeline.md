@@ -10,7 +10,7 @@ Local WP (slingan.local) -> git push main -> GitHub Actions -> NAS staging -> pr
 
 1. Develop in Local WP.
 2. Commit and **push to `main`** — staging deploys automatically (see `docs/github-actions.md`).
-3. Review staging (default `http://100.72.42.84:8082`).
+3. Review staging (default `http://100.72.42.84:8083`).
 4. Back up production database and uploads.
 5. `./scripts/deploy-production.sh`
 6. `./scripts/seed-production-content.sh` when `seed-content.php` changed.

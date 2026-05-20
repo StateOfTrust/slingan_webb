@@ -16,7 +16,7 @@ services:
     depends_on:
       - db
     ports:
-      - "${WORDPRESS_PORT:-8082}:80"
+      - "${WORDPRESS_PORT:-8083}:80"
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}

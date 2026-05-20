@@ -14,7 +14,7 @@ fi
 : "${NAS_PORT:=9250}"
 : "${NAS_USER:=bot}"
 : "${NAS_PROJECT:=/volume1/docker/slingan-staging}"
-: "${STAGING_URL:=http://${NAS_HOST}:8082}"
+: "${STAGING_URL:=http://${NAS_HOST}:8083}"
 : "${NAS_DOCKER:=sudo -n /usr/local/bin/docker}"
 
 if [[ -z "${SSH_KEY:-}" && -f "$HOME/.ssh/id_ed25519_nas_bot" ]]; then

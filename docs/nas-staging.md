@@ -6,12 +6,12 @@ WordPress in Docker on the Synology NAS — **same NAS, SSH user, and bot key as
 
 | Item | Value |
 |------|--------|
-| URL | `http://100.72.42.84:8082` (Tailscale IP + port **8082**) |
+| URL | `http://100.72.42.84:8083` (Tailscale IP + port **8083**) |
 | NAS path | `/volume1/docker/slingan-staging` |
 | SSH | `bot@100.72.42.84` port **9250** |
 | SSH key (if present) | `~/.ssh/id_ed25519_nas_bot` |
 
-Other sites on the NAS use **8080** (Mörk Quest) and **8081** (UtopiaZtudioz); Slingan uses **8082** to avoid clashes.
+Other sites on the NAS: **8080** Mörk Quest, **8081** UtopiaZtudioz, **8082** State of Trust staging; **Slingan uses 8083**.
 
 Override any of this by copying `.env.staging.example` to `.env.staging` in the repo root (gitignored).
 
@@ -32,7 +32,7 @@ Override any of this by copying `.env.staging.example` to `.env.staging` in the 
 
    If `.env` is missing, the script stops after uploading files.
 
-3. **Create `.env` on the NAS** — copy the uploaded `.env.example`, set strong passwords, and match `WP_HOME` / `WP_SITEURL` to how you reach the site (Tailscale IP and port 8082, or a hostname if you add one):
+3. **Create `.env` on the NAS** — copy the uploaded `.env.example`, set strong passwords, and match `WP_HOME` / `WP_SITEURL` to how you reach the site (Tailscale IP and port 8083, or a hostname if you add one):
 
    ```bash
    ssh -p 9250 -i ~/.ssh/id_ed25519_nas_bot bot@100.72.42.84
