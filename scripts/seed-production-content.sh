@@ -10,12 +10,12 @@ if [[ -f "$ROOT_DIR/.env.production" ]]; then
   set +a
 fi
 
-: "${PRODUCTION_HOST:?Set PRODUCTION_HOST}"
-: "${PRODUCTION_USER:?Set PRODUCTION_USER}"
-: "${PRODUCTION_WP_PATH:?Set PRODUCTION_WP_PATH to the production WordPress root}"
-: "${PRODUCTION_URL:?Set PRODUCTION_URL}"
+: "${LOOPIA_HOST:?Set LOOPIA_HOST}"
+: "${LOOPIA_USER:?Set LOOPIA_USER}"
+: "${LOOPIA_WP_PATH:?Set LOOPIA_WP_PATH to the production WordPress root}"
+: "${PRODUCTION_URL:?Set PRODUCTION_URL, for example https://slingan.se}"
 
-SSH_TARGET="${PRODUCTION_USER}@${PRODUCTION_HOST}"
+SSH_TARGET="${LOOPIA_USER}@${LOOPIA_HOST}"
 SSH_CMD=(ssh)
 RSYNC_OPTS=(-az)
 if [[ -n "${SSH_KEY:-}" ]]; then
@@ -23,14 +23,15 @@ if [[ -n "${SSH_KEY:-}" ]]; then
   RSYNC_OPTS=(-az -e "ssh -i $SSH_KEY")
 fi
 
-REMOTE_SEED="${PRODUCTION_WP_PATH}/wp-content/slingan-seed-content.php"
+REMOTE_SEED="${LOOPIA_WP_PATH}/wp-content/slingan_webb-seed-content.php"
 
 cat <<'WARNING'
 Production content seed updates WordPress-owned pages and options only.
 
 Before continuing:
 1. Take a production database backup.
-2. Confirm the production URL is correct.
+2. Board Games must be installed and activatable on production.
+3. Confirm PRODUCTION_URL is correct.
 WARNING
 
 read -r -p "Type SEED to continue: " CONFIRM
@@ -42,4 +43,6 @@ fi
 rsync "${RSYNC_OPTS[@]}" "$ROOT_DIR/scripts/seed-content.php" "$SSH_TARGET:$REMOTE_SEED"
 
 "${SSH_CMD[@]}" "$SSH_TARGET" \
-  "OUTPUT=\$(php '${REMOTE_SEED}' --wp-path='${PRODUCTION_WP_PATH}' --site-url='${PRODUCTION_URL}' --public=1 2>&1); printf '%s\n' \"\$OUTPUT\"; case \"\$OUTPUT\" in *'Seeded WordPress'*) rm -f '${REMOTE_SEED}' ;; *) echo 'Seed did not complete.' >&2; exit 1 ;; esac"
+  "OUTPUT=\$(php '${REMOTE_SEED}' --wp-path='${LOOPIA_WP_PATH}' --site-url='${PRODUCTION_URL}' --public=1 2>&1); printf '%s\n' \"\$OUTPUT\"; case \"\$OUTPUT\" in *'Seeded WordPress'*) rm -f '${REMOTE_SEED}' ;; *) echo 'Seed did not complete.' >&2; exit 1 ;; esac"
+
+echo "Production seed finished."

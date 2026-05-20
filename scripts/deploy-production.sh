@@ -10,12 +10,12 @@ if [[ -f "$ROOT_DIR/.env.production" ]]; then
   set +a
 fi
 
-: "${PRODUCTION_HOST:?Set PRODUCTION_HOST}"
-: "${PRODUCTION_USER:?Set PRODUCTION_USER}"
-: "${PRODUCTION_WP_CONTENT:?Set PRODUCTION_WP_CONTENT to the production wp-content path}"
+: "${LOOPIA_HOST:?Set LOOPIA_HOST}"
+: "${LOOPIA_USER:?Set LOOPIA_USER}"
+: "${LOOPIA_WP_CONTENT:?Set LOOPIA_WP_CONTENT to the production wp-content path}"
 : "${PRODUCTION_URL:=}"
 
-SSH_TARGET="${PRODUCTION_USER}@${PRODUCTION_HOST}"
+SSH_TARGET="${LOOPIA_USER}@${LOOPIA_HOST}"
 SSH_CMD=(ssh)
 RSYNC_OPTS=(-az)
 if [[ -n "${SSH_KEY:-}" ]]; then
@@ -24,11 +24,12 @@ if [[ -n "${SSH_KEY:-}" ]]; then
 fi
 
 cat <<'WARNING'
-Production deploy is theme-code only.
+Production deploy syncs Git-tracked wp-content (MU plugins + fallback slingan theme).
 
 Before continuing:
-1. Confirm the production WordPress wp-content path.
-2. Take a production database and uploads backup.
+1. Confirm the Loopia wp-content path (same account as Mörk Quest).
+2. Board Games theme must already be installed on production (not in Git).
+3. Take a production database and uploads backup.
 WARNING
 
 read -r -p "Type DEPLOY to continue: " CONFIRM
@@ -37,10 +38,15 @@ if [[ "$CONFIRM" != "DEPLOY" ]]; then
   exit 1
 fi
 
-"${SSH_CMD[@]}" "$SSH_TARGET" "mkdir -p '${PRODUCTION_WP_CONTENT}/themes'"
-rsync "${RSYNC_OPTS[@]}" --delete "$ROOT_DIR/wordpress/wp-content/themes/slingan/" "$SSH_TARGET:$PRODUCTION_WP_CONTENT/themes/slingan/"
+"${SSH_CMD[@]}" "$SSH_TARGET" "mkdir -p '${LOOPIA_WP_CONTENT}/themes' '${LOOPIA_WP_CONTENT}/mu-plugins'"
+rsync "${RSYNC_OPTS[@]}" --delete \
+  "$ROOT_DIR/wordpress/wp-content/mu-plugins/" \
+  "$SSH_TARGET:$LOOPIA_WP_CONTENT/mu-plugins/"
+rsync "${RSYNC_OPTS[@]}" --delete \
+  "$ROOT_DIR/wordpress/wp-content/themes/slingan/" \
+  "$SSH_TARGET:$LOOPIA_WP_CONTENT/themes/slingan/"
 
-echo "Production theme deployed."
+echo "Production wp-content deployed."
 
 if [[ -n "$PRODUCTION_URL" ]]; then
   echo "Checking production URL: ${PRODUCTION_URL}"

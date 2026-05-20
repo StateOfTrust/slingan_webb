@@ -2,6 +2,8 @@
 .env
 .env.*
 !.env.production.example
+!.env.staging.example
+!docker/staging/.env.example
 
 wordpress/wp-content/uploads/
 wordpress/wp-content/cache/

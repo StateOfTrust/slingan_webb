@@ -1,0 +1,101 @@
+# Deploy Slingan NAS staging over SSH (same behaviour as scripts/deploy-staging.sh).
+# Push to main → deploy automatically. Seed runs when seed/MU-plugin paths change, or on manual workflow_dispatch.
+
+name: Staging (NAS)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: slingan-staging-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Paths that trigger a content seed
+        id: paths
+        if: github.event_name == 'push'
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            seed:
+              - 'scripts/seed-content.php'
+              - 'wordpress/wp-content/mu-plugins/**'
+
+      - name: Decide whether to run seed
+        id: seedchoice
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ github.event_name }}" == "push" && "${{ steps.paths.outputs.seed }}" == "true" ]]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Configure SSH
+        id: ssh
+        env:
+          NAS_SSH_PRIVATE_KEY: ${{ secrets.NAS_SSH_PRIVATE_KEY }}
+          NAS_HOST: ${{ secrets.NAS_HOST }}
+          NAS_PORT: ${{ secrets.NAS_PORT }}
+        run: |
+          set -euo pipefail
+          test -n "${NAS_SSH_PRIVATE_KEY}" || { echo "Missing GitHub secret NAS_SSH_PRIVATE_KEY" >&2; exit 1; }
+          KEY="${RUNNER_TEMP}/nas_slingan_staging_key"
+          printf '%s\n' "$NAS_SSH_PRIVATE_KEY" > "$KEY"
+          chmod 600 "$KEY"
+          HOST="${NAS_HOST:-100.72.42.84}"
+          PORT="${NAS_PORT:-9250}"
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "$PORT" -H "$HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+          echo "key_path=$KEY" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to NAS
+        env:
+          SSH_KEY: ${{ steps.ssh.outputs.key_path }}
+          NAS_HOST: ${{ secrets.NAS_HOST }}
+          NAS_PORT: ${{ secrets.NAS_PORT }}
+          NAS_USER: ${{ secrets.NAS_USER }}
+          NAS_PROJECT: ${{ secrets.NAS_PROJECT }}
+          STAGING_URL: ${{ secrets.STAGING_URL }}
+          NAS_DOCKER: ${{ secrets.NAS_DOCKER }}
+        run: |
+          set -euo pipefail
+          export NAS_HOST="${NAS_HOST:-100.72.42.84}"
+          export NAS_PORT="${NAS_PORT:-9250}"
+          export NAS_USER="${NAS_USER:-bot}"
+          export NAS_PROJECT="${NAS_PROJECT:-/volume1/docker/slingan-staging}"
+          export STAGING_URL="${STAGING_URL:-http://${NAS_HOST}:8082}"
+          export NAS_DOCKER="${NAS_DOCKER:-sudo -n /usr/local/bin/docker}"
+          bash ./scripts/deploy-staging.sh
+
+      - name: Seed staging content
+        if: steps.seedchoice.outputs.run == 'true'
+        env:
+          SSH_KEY: ${{ steps.ssh.outputs.key_path }}
+          NAS_HOST: ${{ secrets.NAS_HOST }}
+          NAS_PORT: ${{ secrets.NAS_PORT }}
+          NAS_USER: ${{ secrets.NAS_USER }}
+          NAS_PROJECT: ${{ secrets.NAS_PROJECT }}
+          STAGING_URL: ${{ secrets.STAGING_URL }}
+          NAS_DOCKER: ${{ secrets.NAS_DOCKER }}
+          CI: "true"
+        run: |
+          set -euo pipefail
+          export NAS_HOST="${NAS_HOST:-100.72.42.84}"
+          export NAS_PORT="${NAS_PORT:-9250}"
+          export NAS_USER="${NAS_USER:-bot}"
+          export NAS_PROJECT="${NAS_PROJECT:-/volume1/docker/slingan-staging}"
+          export STAGING_URL="${STAGING_URL:-http://${NAS_HOST}:8082}"
+          export NAS_DOCKER="${NAS_DOCKER:-sudo -n /usr/local/bin/docker}"
+          bash ./scripts/seed-staging-content.sh --yes

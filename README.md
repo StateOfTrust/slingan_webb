@@ -7,25 +7,50 @@ Repo: https://github.com/StateOfTrust/slingan_webb
 ## Pipeline
 
 ```text
-Local Mac -> GitHub -> production
+Local Mac -> GitHub -> NAS staging -> production
 ```
 
-No NAS staging.
+| Environment | Default URL |
+|-------------|-------------|
+| Local | `http://slingan.local` |
+| NAS staging | `http://100.72.42.84:8082` |
+| Production | set in `.env.production` |
+
+## Board Games theme
+
+Install the commercial **Board Games** theme in WordPress on each environment (not in Git). The **startsida** uses the theme **banner** and **four promo tiles**; the **`slingan-frontpage`** MU plugin skips the WooCommerce product strip.
+
+See **`docs/board-games-for-slingan.md`** and **`docs/nas-staging.md`**.
 
 ## Local
 
-- Site: `http://slingan.local`
 - Admin: `ola` / `othello`
 
 ```bash
-./scripts/sync-local-theme.sh
+./scripts/sync-local-mu-plugins.sh
+./scripts/sync-local-theme.sh        # optional: fallback slingan theme
 ./scripts/seed-local-content.sh
-./scripts/reset-local-wp.sh --yes
+./scripts/open-local-site.sh
 ```
 
-If the browser opens the wrong site or domain, run `./scripts/seed-local-content.sh` from **this** repository (or `./scripts/reset-local-wp.sh --yes`). Scripts pick the MySQL socket that belongs to `Local Sites/slingan`, not another Local site.
+## NAS staging (automatic)
 
-## Production
+**Push to `main`** → GitHub Actions runs `.github/workflows/staging.yml` → NAS staging is updated over SSH.
+
+One-time setup: NAS `.env`, WordPress install, Board Games theme, and GitHub secret **`NAS_SSH_PRIVATE_KEY`**. See **`docs/github-actions.md`** and **`docs/nas-staging.md`**.
+
+Default staging URL: `http://100.72.42.84:8082`
+
+Manual fallback:
+
+```bash
+./scripts/deploy-staging.sh
+./scripts/seed-staging-content.sh --yes
+```
+
+## Production (Loopia, same as Mörk Quest)
+
+Account **`vfbi97`** on **`ssh.loopia.se`**. Default path **`slingan.se/public_html`** — confirm in Loopia if the folder name differs.
 
 ```bash
 cp .env.production.example .env.production
