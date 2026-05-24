@@ -1,0 +1,216 @@
+/* Minimal additions; main layout uses theme .slingan-tile / .slingan-tiles */
+
+.slingan-bgg-plays__result {
+    right: 0.85rem;
+    left: 0.85rem;
+    max-width: none;
+    line-height: 1.3;
+    text-align: left;
+    white-space: normal;
+}
+
+.slingan-bgg-plays__result--self {
+    background: var(--slingan-accent, #d24749);
+}
+
+.slingan-bgg-plays__result--other,
+.slingan-bgg-plays__result--tie {
+    background: rgba(30, 30, 30, 0.88);
+}
+
+/* Top played: 3×3 image grid only */
+.slingan-bgg-top {
+    margin: 0;
+    padding: 0;
+}
+
+.slingan-bgg-top__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+}
+
+.slingan-bgg-top__cell {
+    display: block;
+    aspect-ratio: 1;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.slingan-bgg-top__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    object-fit: cover;
+    vertical-align: top;
+}
+
+.slingan-bgg-top__img-placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: rgba(30, 30, 30, 0.08);
+}
+
+.slingan-bgg-plays__rating {
+    position: absolute;
+    right: 0.85rem;
+    bottom: 0.85rem;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.65rem;
+    height: 2.65rem;
+    border-radius: 50%;
+    background: #e8a035;
+    background: var(--slingan-bgg-rating, #e8a035);
+    color: #1e1e1e;
+    font-size: 0.95rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    box-shadow: 0 4px 14px rgba(30, 30, 30, 0.28);
+    pointer-events: none;
+}
+
+.slingan-bgg-plays__filter {
+    margin: 0.75rem auto 0;
+    max-width: 32rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--slingan-accent, #d24749);
+}
+
+.slingan-bgg-plays__credit {
+    max-width: 72rem;
+    margin: 1.25rem auto 0;
+    text-align: center;
+    font-size: 0.82rem;
+}
+
+.slingan-bgg-plays__credit a {
+    color: var(--slingan-muted, #787878);
+    text-decoration: none;
+}
+
+.slingan-bgg-plays__credit a:hover {
+    color: var(--slingan-accent, #d24749);
+    text-decoration: underline;
+}
+
+/* Paginated play list */
+.slingan-bgg-plays-list {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 2rem clamp(1rem, 4vw, 2.5rem) 3rem;
+}
+
+.slingan-bgg-plays-list__title {
+    margin: 0 0 0.5rem;
+    font-family: var(--slingan-font-heading, inherit);
+    font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+    font-weight: 600;
+    color: var(--slingan-secondary, #1e1e1e);
+}
+
+.slingan-bgg-plays-list__intro,
+.slingan-bgg-plays-list__meta {
+    margin: 0 0 0.5rem;
+    color: var(--slingan-muted, #787878);
+}
+
+.slingan-bgg-plays-list__meta {
+    font-size: 0.92rem;
+}
+
+.slingan-bgg-plays-list__empty {
+    padding: 2rem;
+    text-align: center;
+    color: var(--slingan-muted, #787878);
+}
+
+.slingan-bgg-plays-list__table-wrap {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border-radius: var(--slingan-radius-lg, 12px);
+    box-shadow: var(--slingan-shadow, 0 8px 24px rgba(30, 30, 30, 0.08));
+    background: var(--slingan-surface, #fff);
+}
+
+.slingan-bgg-plays-list__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.slingan-bgg-plays-list__table th,
+.slingan-bgg-plays-list__table td {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(30, 30, 30, 0.08);
+    vertical-align: top;
+}
+
+.slingan-bgg-plays-list__table th {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slingan-muted, #787878);
+    background: rgba(30, 30, 30, 0.03);
+}
+
+.slingan-bgg-plays-list__table tbody tr:hover {
+    background: rgba(210, 71, 73, 0.04);
+}
+
+.slingan-bgg-plays-list__table a {
+    color: var(--slingan-text, #1e1e1e);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.slingan-bgg-plays-list__table a:hover {
+    color: var(--slingan-accent, #d24749);
+}
+
+.slingan-bgg-plays-list__winner {
+    font-weight: 700;
+}
+
+.slingan-bgg-plays-list__winner--self {
+    color: var(--slingan-accent, #d24749);
+}
+
+.slingan-bgg-plays-list__muted {
+    color: var(--slingan-muted, #787878);
+}
+
+.slingan-bgg-plays__pagination {
+    margin: 1.5rem 0 0;
+    text-align: center;
+}
+
+.slingan-bgg-plays__pagination .page-numbers {
+    display: inline-block;
+    margin: 0 0.2rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--slingan-secondary, #1e1e1e);
+}
+
+.slingan-bgg-plays__pagination .page-numbers.current {
+    background: var(--slingan-accent, #d24749);
+    color: #fff;
+}
+
+.slingan-bgg-plays__pagination .page-numbers:hover {
+    background: rgba(210, 71, 73, 0.12);
+    color: var(--slingan-accent, #d24749);
+}

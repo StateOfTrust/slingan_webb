@@ -1,0 +1,239 @@
+/* The Events Calendar + Event Tickets — Slingan brand overrides */
+
+.tribe-common--breakpoint-medium.tribe-common .tribe-common-h1,
+.tribe-common--breakpoint-medium.tribe-common .tribe-common-h2,
+.tribe-common--breakpoint-medium.tribe-common .tribe-common-h3,
+.tribe-common .tribe-common-h1,
+.tribe-common .tribe-common-h2,
+.tribe-common .tribe-common-h3 {
+    font-family: var(--slingan-font-heading, "Oswald", sans-serif);
+    letter-spacing: 0.03em;
+}
+
+.tribe-events .tribe-events-c-search__button,
+.tribe-events .tribe-events-c-top-bar__datepicker-button,
+.tribe-events button.tribe-events-c-top-bar__today-button,
+.tribe-common-c-btn,
+.tribe-common-c-btn-border,
+.tribe-tickets__tickets-item button,
+.tribe-tickets__attendance-list-item-cta .tribe-common-c-btn {
+    border-radius: 999px !important;
+    font-weight: 600 !important;
+}
+
+.tribe-events .tribe-events-c-search__button,
+.tribe-common-c-btn:not(.tribe-common-c-btn-border) {
+    background: var(--slingan-accent, #d24749) !important;
+    border-color: var(--slingan-accent, #d24749) !important;
+    color: var(--sot-white, #f5f5f0) !important;
+}
+
+.tribe-events .tribe-events-c-search__button:hover,
+.tribe-common-c-btn:not(.tribe-common-c-btn-border):hover {
+    opacity: 0.92;
+}
+
+.tribe-events-calendar-list__event-title a,
+.tribe-events-calendar-month__calendar-event-title a,
+.tribe-events-pro-photo__event-title a {
+    color: var(--slingan-text, #1e1e1e);
+    font-weight: 600;
+}
+
+.tribe-events-calendar-list__event-title a:hover,
+.tribe-events-calendar-month__calendar-event-title a:hover {
+    color: var(--slingan-accent, #d24749);
+}
+
+/* List view red date column */
+.tribe-events-calendar-list__event-date-tag-datetime,
+.tribe-events-calendar-latest-past__event-date-tag-datetime,
+.tribe-events-calendar-month__calendar-event-tooltip-date-tag-datetime {
+    background: var(--slingan-accent, #d24749);
+    border-radius: 8px;
+}
+
+.tribe-events .tribe-events-calendar-list__event-date-tag-weekday,
+.tribe-events .tribe-events-calendar-latest-past__event-date-tag-month,
+.tribe-events .tribe-events-calendar-month__calendar-event-tooltip-date-tag-weekday {
+    color: var(--sot-white, #f5f5f0) !important;
+}
+
+.tribe-events .tribe-events-calendar-list__event-date-tag-daynum,
+.tribe-events .tribe-events-calendar-latest-past__event-date-tag-daynum,
+.tribe-events .tribe-events-calendar-month__calendar-event-tooltip-date-tag-daynum {
+    color: var(--slingan-text, #1e1e1e) !important;
+}
+
+.tribe-events-single-event-title {
+    font-family: var(--slingan-font-heading, "Oswald", sans-serif);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--slingan-secondary, #1e1e1e);
+}
+
+.tribe-events-single .tribe-events-schedule,
+.tribe-events-single .tribe-events-meta-group {
+    border-left: 4px solid var(--slingan-accent, #d24749);
+    padding-left: 1rem;
+}
+
+/* Event Tickets on single event + linked blog posts */
+.slingan-post-event-tickets {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--slingan-border, rgba(30, 30, 30, 0.1));
+}
+
+.slingan-post-event-tickets__title {
+    margin: 0 0 0.5rem;
+    font-family: var(--slingan-font-heading, "Oswald", sans-serif);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--slingan-secondary, #1e1e1e);
+}
+
+.slingan-post-event-tickets__when {
+    margin: 0 0 0.35rem;
+    font-weight: 600;
+    color: var(--slingan-accent, #d24749);
+}
+
+.slingan-post-event-tickets__where,
+.slingan-post-event-tickets__calendar {
+    margin: 0 0 0.5rem;
+    font-size: 0.95rem;
+    color: var(--slingan-muted, #787878);
+}
+
+.slingan-post-event-tickets__calendar a {
+    font-weight: 600;
+    color: var(--slingan-text, #1e1e1e);
+}
+
+.slingan-post-event-tickets__calendar a:hover {
+    color: var(--slingan-accent, #d24749);
+}
+
+.slingan-post-event-tickets__form {
+    margin-top: 1.25rem;
+}
+
+.slingan-post-event-tickets__notice {
+    margin: 1rem 0 0;
+    font-size: 0.95rem;
+    color: var(--slingan-muted, #787878);
+}
+
+/* RSVP modal (front-page tiles → linked event) */
+.slingan-rsvp-modal {
+    width: min(92vw, 40rem);
+    max-height: 90vh;
+    margin: auto;
+    padding: 0;
+    border: none;
+    border-radius: var(--slingan-radius-lg, 14px);
+    background: transparent;
+    overflow: visible;
+}
+
+.slingan-rsvp-modal::backdrop {
+    background: rgba(30, 30, 30, 0.55);
+}
+
+.slingan-rsvp-modal__panel {
+    position: relative;
+    max-height: 90vh;
+    overflow: auto;
+    padding: 1.5rem 1.5rem 1.25rem;
+    background: var(--slingan-surface, #fff);
+    border-radius: var(--slingan-radius-lg, 14px);
+    box-shadow: var(--slingan-shadow-hover, 0 16px 40px rgba(30, 30, 30, 0.18));
+}
+
+.slingan-rsvp-modal__close {
+    position: absolute;
+    top: 0.65rem;
+    right: 0.75rem;
+    border: none;
+    background: transparent;
+    font-size: 1.75rem;
+    line-height: 1;
+    color: var(--slingan-muted, #787878);
+    cursor: pointer;
+}
+
+.slingan-rsvp-modal__close:hover {
+    color: var(--slingan-text, #1e1e1e);
+}
+
+.slingan-rsvp-modal__title {
+    margin: 0 2rem 0.35rem 0;
+    font-family: var(--slingan-font-heading, "Oswald", sans-serif);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--slingan-secondary, #1e1e1e);
+}
+
+.slingan-rsvp-modal__schedule {
+    margin: 0 0 1rem;
+    font-weight: 600;
+    color: var(--slingan-accent, #d24749);
+}
+
+.slingan-rsvp-modal__body .tribe-tickets__rsvp-wrapper,
+.slingan-rsvp-modal__body .tribe-tickets__tickets-wrapper {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+.slingan-rsvp-modal__loading,
+.slingan-rsvp-modal__error {
+    margin: 0;
+    color: var(--slingan-muted, #787878);
+}
+
+.slingan-rsvp-modal__footer {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--slingan-border, rgba(30, 30, 30, 0.1));
+    text-align: center;
+}
+
+.slingan-rsvp-modal__article {
+    font-weight: 600;
+    color: var(--slingan-text, #1e1e1e);
+}
+
+.slingan-rsvp-modal__article:hover {
+    color: var(--slingan-accent, #d24749);
+}
+
+body.slingan-rsvp-modal-open {
+    overflow: hidden;
+}
+
+button.slingan-open-rsvp-modal.slingan-btn--tile {
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.tribe-tickets__tickets-wrapper,
+.event-tickets .tribe-tickets__tickets-wrapper {
+    border-radius: var(--slingan-radius, 14px);
+    border: 1px solid var(--slingan-border, rgba(30, 30, 30, 0.1));
+    padding: 1.25rem;
+    background: var(--slingan-surface, #fff);
+    box-shadow: var(--slingan-shadow, 0 10px 32px rgba(30, 30, 30, 0.08));
+}
+
+.tribe-tickets__tickets-title {
+    font-family: var(--slingan-font-heading, "Oswald", sans-serif);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}

@@ -20,7 +20,7 @@ Local Mac -> GitHub -> NAS staging -> production
 
 Install the commercial **Board Games** theme in WordPress on each environment (not in Git). The **startsida** uses the theme **banner** and **four promo tiles**; the **`slingan-frontpage`** MU plugin skips the WooCommerce product strip.
 
-See **`docs/board-games-for-slingan.md`** and **`docs/nas-staging.md`**.
+See **`docs/slingan-theme.md`** (recommended in-repo theme), **`docs/slingan-events.md`** (The Events Calendar + Event Tickets), **`docs/board-games-for-slingan.md`** (legacy commercial theme), and **`docs/nas-staging.md`**.
 
 ## Local
 
@@ -41,6 +41,10 @@ One-time setup: NAS `.env`, WordPress install, Board Games theme, and GitHub sec
 
 Default staging URL: `http://100.72.42.84:8083`
 
+## Listmonk (NAS newsletters)
+
+Self-hosted on the NAS at **`http://100.72.42.84:8084`** (Tailscale). Setup: **`docs/listmonk-nas.md`**, deploy: `./scripts/deploy-listmonk-nas.sh`. (No WordPress plugin — newsletters via Mailchimp or similar.)
+
 Manual fallback:
 
 ```bash
@@ -54,7 +58,8 @@ Account **`vfbi97`** on **`ssh.loopia.se`**. Default path **`slingan.se/public_h
 
 ```bash
 cp .env.production.example .env.production
-./scripts/deploy-production.sh
+./scripts/deploy-production.sh          # rsync theme + MU plugins (recommended)
+# or: ./scripts/package-theme.sh        # dist/slingan-X.Y.Z.zip for wp-admin upload
 ./scripts/seed-production-content.sh
 ```
 

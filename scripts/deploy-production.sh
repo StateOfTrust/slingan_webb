@@ -48,6 +48,20 @@ rsync "${RSYNC_OPTS[@]}" --delete \
 
 echo "Production wp-content deployed."
 
+# Clear page caches so theme/JS changes show immediately (WP Fastest Cache + LiteSpeed).
+"${SSH_CMD[@]}" "$SSH_TARGET" "cd '${LOOPIA_WP_PATH}' && wp cache flush >/dev/null 2>&1; wp eval '
+if (class_exists(\"WpFastestCache\")) {
+    \$c = new WpFastestCache();
+    if (method_exists(\$c, \"deleteCache\")) {
+        \$c->deleteCache(true);
+    }
+}
+if (function_exists(\"litespeed_purge_all\")) {
+    litespeed_purge_all();
+}
+' >/dev/null 2>&1" || true
+echo "Production page cache purged (if WP-CLI available)."
+
 if [[ -n "$PRODUCTION_URL" ]]; then
   echo "Checking production URL: ${PRODUCTION_URL}"
   curl -fsSIL "$PRODUCTION_URL" >/dev/null
